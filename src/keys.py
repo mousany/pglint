@@ -1,7 +1,7 @@
-import keyboard
+from typing import overload
+
 
 class pglintKeys():
-
     '''Keyboard component of pglint, to use it, you need to create an instance of it.
 
     And after you finish modify keyboard config, you are required to apply it to add it 
@@ -12,7 +12,7 @@ class pglintKeys():
 
         stop: deactivate pglint.
 
-        pause: pause / unpause pglint.
+        pause: activate / deactivate pglint per-charater mode.
 
         reset: reset text-pointer to the begining.
 
@@ -26,10 +26,6 @@ class pglintKeys():
 
             and move it to the first word of the next sentence.
 
-        last: erase one word you have written.
-
-        backward: erase one sentense you have written.
-
         before: move the text-pointer to the next word.
 
         after: move the text-pointer to the previous word.
@@ -39,42 +35,36 @@ class pglintKeys():
         behind:  move the text-pointer to the first word of the last sentence.
     '''
 
-    def __init__(self):
+    __keys__ = {
+        "stop": "esc",
+        "pause": "\\",
+        "reset": "[",
+        "all": "]",
+        "next": "-",
+        "forward": "=",
+        "before": "alt+-",
+        "after": "alt+plus",
+        "ahead": "alt+[",
+        "behind": "alt+]"
+    }
 
+    def __init__(self, keys: dict = __keys__):
         '''Initialize pglintKey, use the default key above when initualizing.'''
 
-        self._hotkeys = {
-            "stop": ['', ], 
-            "pause": ['', ], 
-            "reset": ['', ], 
-            "all": ['', ], 
-            "next": ['', ],
-            "forward": ['', ], 
-            "last": ['', ], 
-            "backward": ['', ],
-            "before": ['', ], 
-            "after": ['', ], 
-            "ahead": ['', ], 
-            "behind": ['', ], 
-        }
+        self._keys = keys
 
-    def modifyKey(self, name: str, key: str): 
+    def _set(self, name: str, key: str):
+        '''Set a key from keyboard config, function name and keyboard string are required.'''
 
-        '''Modify a key from keyboard config, function name and keyboard string are required.'''
-        
-        self._hotkeys[name][0] = key
+        self._keys[name] = key
 
-    def modifyKeys(self, dic: dict):
+    @overload
+    def _set(self, dic: dict):
+        '''Set keyboard config from a dict, probably parsed from JSON.'''
 
-        '''Modify keyboard config from a dict, probably parsed from JSON.'''
+        for key, value in dic.items():
+            if key in self._keys.keys():
+                self._keys[key] = value
 
-        for key, value in dic:
-            if key in self._hotkeys.keys():
-                self._hotkeys[key][0] = value
-
-    def apply(self):
-
-        '''Apply keyboard config by adding hotkeys to keyboard.'''
-
-        for key, value in self._hotkeys:
-            keyboard.add_hotkey(*value)
+    def _get(self):
+        return self._keys

@@ -1,0 +1,12 @@
+{
+    "stop": "esc",
+    "pause": "\\",
+    "reset": "[",
+    "all": "]",
+    "next": "-",
+    "forward": "=",
+    "before": "alt+-",
+    "after": "alt+plus",
+    "ahead": "alt+[",
+    "behind": "alt+]"
+}

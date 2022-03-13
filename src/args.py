@@ -3,43 +3,47 @@
 class pglintArgs():
     '''Arguement handlers of pglint'''
 
-    def __init__(self):
-        self._pointer = 0
-        self._buffer = ""
-        self._argDict = {
-            "--help": "-h", 
-            "--channel": "-c",
-            "--file": "-f", 
-            "--text": "-t", 
-            "--save": "-s", 
-            "--live": "-l", 
-        }
+    __args__ = {
+        "--help": "-h", 
+        "--intern": "-i",
+        "--file": "-f", 
+        "--text": "-t", 
+        "--save": "-s", 
+        "--all": "-a", 
+        "--config": '-c', 
+    }
+
+    def __init__(self, args: dict = __args__):
+        self._args = args
 
     def __getitem__(self, key: str):
-        if key in self._argDict.keys():
-            return getattr(self, '__' + key[2:] + '__')
+        if key in self._args.keys():
+            return getattr(self, '_' + key[2:])
         else:
-            _reverseDict = dict(zip(self._argDict.values(), self._argDict.keys()))
+            _reverseDict = dict(zip(self._args.values(), self._args.keys()))
             if key in _reverseDict.keys():
-                return getattr(self, '__' + _reverseDict[key] + '__')
+                return getattr(self, '_' + _reverseDict[key][2:])
             else:
                 return None
 
-    def __help__(self):
+    def _help(self):
        pass
 
-    def __channel__(self, src: str):
+    def _intern(self, url: str):
         pass
 
-    def __file__(self, src: str):
+    def _file(self, src: str):
         pass
 
-    def __text__(self, text: str): 
+    def _text(self, text: str): 
         pass
 
-    def __save__(self, src: str):
+    def _save(self, src: str):
         pass
 
-    def __live__(self, src: str):
+    def _all(self):
+        pass
+
+    def _config(self, dic: dict):
         pass
 
