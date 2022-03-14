@@ -7,14 +7,16 @@ class pglintKernel():
     '''
 
     __color__ = {
-        "success": "\033[35m%s\033[0m",
+        "success": "\033[32m%s\033[0m",
         "error": "\033[31m%s\033[0m",
         "warning": "\033[33m%s\033[0m",
     }
 
     __invalidKey__ = '-=[]\\'
 
-    def __init__(self, text: str):
+    __defaultText__ = '''The Zen of Python,by Tim Peters.Beautiful is better than ugly.  Explicit is better than implicit.\nSimple is better than complex! Complex is better than complicated.Flat is better than nested ?  .Sparse is better than dense.'''
+
+    def __init__(self, text: str = __defaultText__):
         '''Initialize pglint kernel, set roaming variables.'''
 
         self._active = False
@@ -30,11 +32,30 @@ class pglintKernel():
             return None
 
     def _log(self, sig: str, msg: str):
-        '''Log to the console.'''
+        '''Log on the console.'''
 
-        print(
-            f"[{ pglintKernel.__color__[sig] % sig.upper() }] { msg.capitalize() }"
-        )
+        if sig in pglintKernel.__color__.keys():
+            print(
+                f"{ pglintKernel.__color__[sig] % sig.upper() } { msg.capitalize() }"
+            )
+
+    def _error(self, msg: str):
+        '''Print error and exit the program.'''
+
+        self._log("error", msg)
+        # self._log("error", "pglint is closed for errors.")
+        exit()
+
+    def _setText(self, text: str):
+        '''Set text for pglint kernel.'''
+
+        if text != None: 
+            self._text = text
+
+    def _getText(self):
+        '''Get text from pglint kernel'''
+
+        return self._text
 
     def _backspace(self, length: int):
         '''Write certain backspace on console.'''
@@ -150,6 +171,7 @@ class pglintKernel():
     def _apply(self, keys: dict):
         '''Apply keyboard config by adding hotkeys to keyboard and activate the whole process.'''
 
+        self._log("success", "pglint kernel is now activated.")
         for key, value in keys.items():
             if self[key] != None:
                 keyboard.add_hotkey(value, self[key])

@@ -1,3 +1,4 @@
+import json
 from typing import overload
 
 
@@ -45,26 +46,35 @@ class pglintKeys():
         "before": "alt+-",
         "after": "alt+plus",
         "ahead": "alt+[",
-        "behind": "alt+]"
+        "behind": "alt+]", 
     }
+
+    __defaultSaveSrc__ = "config.json"
 
     def __init__(self, keys: dict = __keys__):
         '''Initialize pglintKey, use the default key above when initualizing.'''
 
         self._keys = keys
+        
+        try:
+            with open(pglintKeys.__defaultSaveSrc__) as f:
+                self._keys = json.load(f)
+        except Exception as excepts:
+            self._save()
 
     def _set(self, name: str, key: str):
         '''Set a key from keyboard config, function name and keyboard string are required.'''
 
         self._keys[name] = key
-
-    @overload
-    def _set(self, dic: dict):
-        '''Set keyboard config from a dict, probably parsed from JSON.'''
-
-        for key, value in dic.items():
-            if key in self._keys.keys():
-                self._keys[key] = value
+        self._save()
 
     def _get(self):
+        '''Get keyboard config from pglintKeys instance.'''
+
         return self._keys
+
+    def _save(self):
+        '''Save keyboard config to local JSON file.'''
+
+        with open(pglintKeys.__defaultSaveSrc__, "w") as f:
+            json.dump(self._keys, f)
