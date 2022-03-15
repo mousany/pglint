@@ -45,7 +45,7 @@ def main():
         else:
             _kernel._setText(_args[name](value))
 
-    if set(names) <= set(pglintArgs.__exitArgs__):
+    if names != [] and set(names) <= set(pglintArgs.__exitArgs__):
         sys.exit()
 
     if _kernel._text == pglintKernel.__defaultText__:
