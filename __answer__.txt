@@ -1,2 +1,1 @@
-The Zen of Python,by Tim Peters.Beautiful is better than ugly.  Explicit is better than implicit.
-Simple is better than complex! Complex is better than complicated.Flat is better than nested ?  .Sparse is better than dense.
+Back in the 90s, I was in a very famous TV show. I am Bojack Horseman. Bojack Horseman the one you all know.

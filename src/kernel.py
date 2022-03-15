@@ -15,7 +15,7 @@ class pglintKernel():
 
     __invalidKey__ = '-=[]\\'
 
-    __defaultText__ = '''The Zen of Python,by Tim Peters.Beautiful is better than ugly.  Explicit is better than implicit.\nSimple is better than complex! Complex is better than complicated.Flat is better than nested ?  .Sparse is better than dense.'''
+    __defaultText__ = '''The Zen of Python,by Tim Peters.Beautiful is better than ugly.'''
     __defaultTextSrc__ = "https://raw.githubusercontent.com/yanglinshu/pglint/master/test.txt"
 
     def __init__(self, text: str = __defaultText__):

@@ -1,5 +1,5 @@
 from src.extern import pglintExtern
-
+from src.kernel import pglintKernel
 
 class pglintArgs():
     '''Arguement handlers of pglint'''
@@ -107,6 +107,11 @@ Notice:
     def _save(self, text: str):
         '''Save handler, save text to __answer__.txt on disks.'''
 
+        if text == pglintKernel.__defaultText__:
+            try:
+                text = self._extern._get(pglintKernel.__defaultTextSrc__)
+            except Exception as excepts:
+                self._log("warning", "no remote source available, using local default text now")
         try:
             self._extern._write(pglintArgs.__defaultSaveSrc__, text)
             self._log("success", "save text into __answer__.txt successfully")
