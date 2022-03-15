@@ -1,3 +1,4 @@
+import sys
 import keyboard
 
 
@@ -15,6 +16,7 @@ class pglintKernel():
     __invalidKey__ = '-=[]\\'
 
     __defaultText__ = '''The Zen of Python,by Tim Peters.Beautiful is better than ugly.  Explicit is better than implicit.\nSimple is better than complex! Complex is better than complicated.Flat is better than nested ?  .Sparse is better than dense.'''
+    __defaultTextSrc__ = "https://raw.githubusercontent.com/yanglinshu/pglint/master/test.txt"
 
     def __init__(self, text: str = __defaultText__):
         '''Initialize pglint kernel, set roaming variables.'''
@@ -43,13 +45,13 @@ class pglintKernel():
         '''Print error and exit the program.'''
 
         self._log("error", msg)
-        # self._log("error", "pglint is closed for errors.")
-        exit()
+        # self._log("error", "pglint is closed for errors")
+        sys.exit()
 
     def _setText(self, text: str):
         '''Set text for pglint kernel.'''
 
-        if text != None: 
+        if text != None:
             self._text = text
 
     def _getText(self):
@@ -75,13 +77,22 @@ class pglintKernel():
                 loc = min(loc, pos)
         return loc + idx
 
+    def _show(self):
+        '''Show the sentence from the text-pointer to the next sub-clause.'''
+
+        if self._pointer < len(self._text):
+            idx = self._match(self._text[self._pointer:], ',.?!')
+            self._log(
+                "success", "text pointer now starts with: " +
+                self._text[self._pointer:self._pointer + idx + 1])
+
     def _stop(self):
         '''Stop handler, which will never be reached by keyboard.'''
 
         pass
 
-    def _pause(self):
-        '''Pause handler, switch mode for pglint.'''
+    def _switch(self):
+        '''Switch handler, switch mode for pglint.'''
 
         self._backspace(1)
         self._active = not self._active
@@ -91,6 +102,7 @@ class pglintKernel():
 
         self._backspace(1)
         self._pointer = 0
+        self._log("success", "text-pointer is now at the begining")
 
     def _all(self):
         '''All handler, print the whole text on keyboard.'''
@@ -98,57 +110,74 @@ class pglintKernel():
         self._backspace(1)
         keyboard.write(self._text[self._pointer:])
         self._pointer = len(self._text)
+        self._log("success", "text-pointer is now at the end")
         keyboard.send('end')
 
     def _next(self):
         '''Next handler, print the next word on keyboard.'''
 
         self._backspace(1)
-        if self._pointer == len(self._text):
-            return
-        idx = self._match(self._text[self._pointer:], ' .?!,')
-        keyboard.write(self._text[self._pointer:self._pointer + idx + 1])
-        self._pointer += idx + 1
+        if self._pointer < len(self._text):
+            idx = self._match(self._text[self._pointer:], ' .?!,')
+            keyboard.write(self._text[self._pointer:self._pointer + idx + 1])
+            self._pointer += idx + 1
+            self._show()
+        else:
+            self._log("warning", "text-pointer is now at the end")
         keyboard.send('end')
 
     def _forward(self):
         '''Forward handler, print the next sentence on keyboard.'''
 
         self._backspace(1)
-        if self._pointer == len(self._text):
-            return
-        idx = self._match(self._text[self._pointer:])
-        keyboard.write(self._text[self._pointer:self._pointer + idx + 1])
-        self._pointer += idx + 1
+        if self._pointer < len(self._text):
+            idx = self._match(self._text[self._pointer:])
+            keyboard.write(self._text[self._pointer:self._pointer + idx + 1])
+            self._pointer += idx + 1
+            self._show()
+        else:
+            self._log("warning", "text-pointer is now at the end")
         keyboard.send('end')
 
     def _before(self):
         '''Before handler, move the text-pointer to the last word.'''
 
         idx = self._match(self._text[:self._pointer][::-1], ' .?!,')
-        if self._pointer != 0:
+        if self._pointer > 0:
             self._pointer -= idx
+            self._show()
+        else:
+            self._log("warning", "text-pointer is now at the begining")
 
     def _after(self):
         '''After handler, move the text-pointer to the next word.'''
 
         idx = self._match(self._text[self._pointer:], ' .?!,')
-        if self._pointer != len(self._text):
+        if self._pointer < len(self._text):
             self._pointer += idx
+            self._show()
+        else:
+            self._log("warning", "text-pointer is now at the end")
 
     def _behind(self):
         '''Behind handler, move the text-pointer to the last sentence.'''
 
         idx = self._match(self._text[:self._pointer][::-1])
-        if self._pointer != 0:
+        if self._pointer > 0:
             self._pointer -= idx
+            self._show()
+        else:
+            self._log("warning", "text-pointer is now at the begining")
 
     def _ahead(self):
         '''Ahead handler, move the text-pointer to the next sentence.'''
 
         idx = self._match(self._text[self._pointer:])
-        if self._pointer != len(self._text):
+        if self._pointer < len(self._text):
             self._pointer += idx
+            self._show()
+        else:
+            self._log("warning", "text-pointer is now at the end")
 
     def _callback(self, event: keyboard.KeyboardEvent):
         '''Callback for all keyboard events, only record valid keyboard movements.'''
@@ -156,7 +185,7 @@ class pglintKernel():
         if event.name == 'esc':
             return
         if event.event_type == 'down' and self._active:
-            if self._pointer == len(self._text):
+            if self._pointer >= len(self._text):
                 return
             if event.name == "space":
                 self._backspace(1)
@@ -171,7 +200,7 @@ class pglintKernel():
     def _apply(self, keys: dict):
         '''Apply keyboard config by adding hotkeys to keyboard and activate the whole process.'''
 
-        self._log("success", "pglint kernel is now activated.")
+        self._log("success", "pglint kernel is now activated")
         for key, value in keys.items():
             if self[key] != None:
                 keyboard.add_hotkey(value, self[key])

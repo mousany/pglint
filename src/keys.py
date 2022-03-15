@@ -1,5 +1,4 @@
 import json
-from typing import overload
 
 
 class pglintKeys():
@@ -13,7 +12,7 @@ class pglintKeys():
 
         stop: deactivate pglint.
 
-        pause: activate / deactivate pglint per-charater mode.
+        switch: activate / deactivate pglint per-charater mode.
 
         reset: reset text-pointer to the begining.
 
@@ -38,15 +37,15 @@ class pglintKeys():
 
     __keys__ = {
         "stop": "esc",
-        "pause": "\\",
+        "switch": "\\",
         "reset": "[",
         "all": "]",
         "next": "-",
         "forward": "=",
         "before": "alt+-",
         "after": "alt+plus",
-        "ahead": "alt+[",
-        "behind": "alt+]", 
+        "behind": "alt+[",
+        "ahead": "alt+]",
     }
 
     __defaultSaveSrc__ = "config.json"
@@ -55,7 +54,7 @@ class pglintKeys():
         '''Initialize pglintKey, use the default key above when initualizing.'''
 
         self._keys = keys
-        
+
         try:
             with open(pglintKeys.__defaultSaveSrc__) as f:
                 self._keys = json.load(f)
@@ -73,8 +72,18 @@ class pglintKeys():
 
         return self._keys
 
+    def _reset(self):
+        '''Reset keyboard config to default.'''
+
+        self._keys = pglintKeys.__keys__
+        self._save()
+
     def _save(self):
         '''Save keyboard config to local JSON file.'''
-
-        with open(pglintKeys.__defaultSaveSrc__, "w") as f:
-            json.dump(self._keys, f)
+        try:
+            with open(pglintKeys.__defaultSaveSrc__, "w") as f:
+                json.dump(self._keys, f)
+        except Exception as excepts:
+            print(
+                '\033[33mWARNING\033[0m Unable to save keyboard config, your customized config will be lost once pglint is closed'
+            )
