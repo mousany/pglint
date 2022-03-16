@@ -16,7 +16,7 @@ class pglintKernel():
     __invalidKey__ = '-=[]\\'
 
     __defaultText__ = '''The Zen of Python,by Tim Peters.Beautiful is better than ugly.'''
-    __defaultTextSrc__ = "https://raw.githubusercontent.com/yanglinshu/pglint/master/test.txt"
+    __defaultTextSrc__ = "https://raw.githubusercontent.com/undwtpal/pglint-lib/master/__answer__.txt"
 
     def __init__(self, text: str = __defaultText__):
         '''Initialize pglint kernel, set roaming variables.'''

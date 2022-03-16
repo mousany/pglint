@@ -41,6 +41,7 @@ Commands:
                               "name key". Name should be in the config, and except stop('esc') key should 
                               be one valid charater ('a') or ended with one valid character ('ctrl+a').
                               And use 'space', 'plus' and 'comma' to replace ' ', '+' and ',' .
+                              String "default" will reset the key config to default.
                               i.e. "switch ctrl+alt+h"
 
 Notice:
@@ -51,7 +52,7 @@ Notice:
     '''
 
     __defaultSaveSrc__ = "__answer__.txt"
-    __defaultAllSrc__ = "https://raw.githubusercontent.com/yanglinshu/pglint/master/index.json"
+    __defaultAllSrc__ = "https://raw.githubusercontent.com/undwtpal/pglint-lib/master/index.json"
 
     def __init__(self, _log, _error, args: dict = __args__):
         '''Initialize pglintArgs.'''
