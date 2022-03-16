@@ -1,19 +1,18 @@
-# Pglint - syntax analysis for English-Writing | www.pigai.org
-**It's not just a linter that annoys you!**  
+# Pglint - 用于批改网的英语写作分析工具 | www.pigai.org
+**不止是一个烦人的语法检查工具！**  
 
-Pglint is a English-Writing analysis tool which looks for grammer errors, helps enforcing a good grammer, sniffs for logical fallacies and offers simple corrective suggestions.
-
+Pglint 是一个英语写作分析工具，它将帮你找出语法错误，加强语义表达，分析逻辑谬误并提供简单的、建设性的建议。
 
 
 ## 一般使用：
 
-1. 下载 **pglint.exe** 到本地
+1. 下载 **pglint.exe** 到本地。
 
-2. 打开所在文件夹，按住Shift后右键，单击 “**在此处打开 Powershell 窗口**”
+2. 点击 **pglint.exe** 或打开控制台，输入pglint启动。
 
-3. 使用 "**pglint -c 网址**“ 或 **pglint -f 文件路径** 或 **pglint -t "字符串"**  加载输出源
+3. 启动成功后，即可通过快捷键控制输入。
 
-4. 加载成功，点击网页中的输入框准备，此时即可通过快捷键控制输入了
+更多指令请见 **使用提示**
 
    | 快捷键  | 功能                                                         | 名称    |
    | ------- | ------------------------------------------------------------ | ------- |
@@ -30,9 +29,9 @@ Pglint is a English-Writing analysis tool which looks for grammer errors, helps 
 
 ## 使用提示：
 
-1. 灵活使用"Alt + ..."调位：e.g. 若要求从语段中间某句话开始输入，则使用 "Alt + ]" 可快速定位至该位置
-2. 在**自动输入模式**下，若输入速度过快可能造成错位
-3. 请勿使用中文输入法
+1. 灵活使用"Alt + ..."调位：e.g. 若要求从语段中间某句话开始输入，则使用 "Alt + ]" 可快速定位至该位置。
+2. 在**自动输入模式**下，若输入速度过快可能造成错位。
+3. 请勿使用中文输入法。
 
 命令列表：
 -----------------------------------
@@ -43,7 +42,7 @@ options:
   -a --all                    Show all available remote sources.
   -k --keys                   Show keyboard config.
   -s --save                   Save text to local file __answer__.txt
-  -c --channel <link>         Get text from remote source and start.
+  -c --channel <url>          Get text from remote source and start.
   -f --file <path>            Get text from local file and start.
   -t --text <text>            Get text from console.
   -o --option <string>        Customize keyboard config.
@@ -60,20 +59,20 @@ pglint -a
   Showing all available texts below
   ---- 基础英语 | test-1: https://raw.githubusercontent.com/yanglinshu/pglint/master/answers/answer1-test.txt
 
-* 往往结合 "pglink -c <link>" 使用
+* 往往结合 "pgurl -c <url>" 使用
 ```
 
 ### 加载在线资源并启动
 
 ```shell
-pglink -c <link> [-s]
+pgurl -c <url> [-s]
 
 参数：
-  <link>  在线资源的网址
+  <url>  在线资源的网址
   [-s]    保存至本地为__answer__.txt
 
 示例：
-  pglink -c https://raw.githubusercontent.com/yanglinshu/pglint/master/answers/answer1-test.txt
+  pgurl -c https://raw.githubusercontent.com/yanglinshu/pglint/master/answers/answer1-test.txt
 输出：
   SUCCESS Get text from remote source successfully.
   SUCCESS Pglint kernel is now activated
@@ -111,6 +110,7 @@ pglint -t "<text>"
   SUCCESS Pglint kernel is now activated
   ...
 ```
+注意在输入包含空格的文本时，请用引号括住该文本。
 
 ### 查看快捷键定义
 
@@ -145,14 +145,17 @@ pglint -o "<name> <key(s)>"
 输出：
   SUCCESS Update keyboard config successfully
 ```
+注意你的快捷键应当以单个合法字母结尾（退出除外），如ctrl+m、ctrl+alt+p，且不应与windows、浏览器或pglint已有快捷键重叠。
+同时对于" ", "+"和","，请使用"space", "plus"和"comma"代替。
+注意在输入包含空格的文本时，请用引号括住该文本。
 
 ## FAQ
 
-Q: "How to open console?"
+Q: "如何打开控制台？"
 
-A: "Hold SHIFT and click MOUSE RIGHT, and click Open powershell here. Or you can type cnd in Path Bar of Windows File Explorer, and press ENTER."
+A: "打开所在文件夹，按住Shift后右键，单击 “**在此处打开 Powershell 窗口**” 或在地址栏输入cmd。"
 
 
-Q: "From console: pglint : 无法将“pglint”项识别为 cmdlet、函数、脚本文件或可运行程序的名称。请检查名称的拼写，如果包括路径，请确保路径正确，然后再试一次。"
+Q: "pglint : 无法将“pglint”项识别为 cmdlet、函数、脚本文件或可运行程序的名称。请检查名称的拼写，如果包括路径，请确保路径正确，然后再试一次。"
 
-A: "If you are in cmd, you may check if you are in the same dir with pglint. if you are in powershell, you may type .\pglint since powershell has a strong policy for unautherized programs."
+A: "请检查你是否与pglint处于同一文件夹下。如果在，且你正在使用powershell启动pglint，请尝试输入.\pglint"

@@ -34,7 +34,7 @@ Commands:
   -k --keys                   Show keyboard config.
   -s --save                   Save text to local file __answer__.txt, only the text you are using before 
                               this command will be saved.
-  -c --channel <link>         Get text from remote source.
+  -c --channel <url>          Get text from remote source.
   -f --file <path>            Get text from local file.
   -t --text <text>            Get text from console.
   -o --option <string>        Customize keyboard config. Your option string should follows the format of
@@ -44,7 +44,7 @@ Commands:
                               i.e. "switch ctrl+alt+h"
 
 Notice:
-  if your text or link contains space(' '), minus('-') or any invalid characters, please put them into a 
+  if your text or url contains space(' '), minus('-') or any invalid characters, please put them into a 
   quotes. 
   i.e. '-t "The Zen of Python."'
 
